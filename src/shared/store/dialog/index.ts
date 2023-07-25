@@ -26,7 +26,7 @@ const useDialog = () => {
     } & ModalProps
   ) => {
     if (props.replace) {
-      setModalStack((state) => state.clear())
+      setModalStack((state) => state.get())
     }
   }
 }
