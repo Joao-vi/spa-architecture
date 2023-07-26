@@ -1,5 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from 'react'
-import { ThemeStore, Theme, initialState } from '.'
+
+import { ThemeStore, Theme } from './types'
+import { initialState } from '.'
 
 interface ThemeStoreContextProviderProps {
   children: ReactNode

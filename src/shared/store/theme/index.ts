@@ -1,23 +1,14 @@
+import { useEffect } from 'react'
+
 import { localStorage } from '../../infra'
 import { useThemeStoreContext } from './provider'
+import { Theme, ThemeMap } from './types'
 
-export type Theme = (typeof ThemeMap)[keyof typeof ThemeMap]
+export const initialState = () => {
+  const persistedTheme = localStorage.get<Theme>('theme')
 
-export interface ThemeStore {
-  // State
-  theme: Theme
-
-  // Methods
-  setTheme(theme: Theme): void
+  return persistedTheme || ThemeMap.System
 }
-
-export const ThemeMap = {
-  Light: 'light',
-  Dark: 'dark',
-  System: 'system',
-} as const
-
-export const initialState: ThemeStore['theme'] = ThemeMap.System
 
 export const useTheme = () => {
   const { theme, setTheme } = useThemeStoreContext()
@@ -31,4 +22,23 @@ export const useTheme = () => {
     theme,
     changeTheme,
   }
+}
+
+export const usePrefersColorScheme = () => {
+  const { changeTheme } = useTheme()
+
+  useEffect(() => {
+    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)')
+    const setTheme = (e: MediaQueryListEvent | MediaQueryList): void =>
+      changeTheme(e.matches ? ThemeMap.Dark : ThemeMap.Light)
+
+    setTheme(colorScheme)
+    colorScheme.addEventListener('change', setTheme)
+
+    return () => {
+      colorScheme.removeEventListener('change', setTheme)
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 }

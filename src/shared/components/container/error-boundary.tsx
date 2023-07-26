@@ -1,5 +1,5 @@
 import React from 'react'
-import { logger } from '../infra'
+import { logger } from '../../infra'
 
 type ErrorBoundaryProps = {
   children: React.ReactNode
@@ -18,8 +18,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error) {
-    logger.error('ErrorBoundary', error)
-
     this.setState({ error })
 
     logger.error('ErrorBoundary', error)

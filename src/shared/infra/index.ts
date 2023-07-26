@@ -10,3 +10,4 @@ const compressImage = new CompressorJsAdapter()
 
 export { httpClient, localStorage, logger, compressImage }
 export { reduxStore, useAppDispatch, useAppSelector } from './store/redux-store'
+export { generateId } from './unique-identifier/uuid'
